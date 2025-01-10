@@ -21,8 +21,18 @@ install_jq() {
     fi
 }
 
+install_curl() {
+    if ! command -v curl &> /dev/null; then
+        echo -e "${RED}curl is not installed. Installing...${NC}"
+        sleep 1
+        sudo apt-get update
+        sudo apt-get install -y curl
+    fi
+}
+
 loader(){
     install_jq
+    install_curl
     SERVER_IP=$(hostname -I | awk '{print $1}')
     SERVER_COUNTRY=$(curl -sS "http://ip-api.com/json/$SERVER_IP" | jq -r '.country')
     SERVER_ISP=$(curl -sS "http://ip-api.com/json/$SERVER_IP" | jq -r '.isp')
@@ -54,11 +64,11 @@ setupFakeWebSite(){
     wget https://github.com/learning-zone/website-templates/archive/refs/heads/master.zip
     unzip master.zip
     rm master.zip
-    cd website-templates-master || { echo "Failed to change directory to randomfakehtml-master"; exit 1; }
+    cd website-templates-master || { echo "Failed to change directory to website-templates-master"; exit 1; }
     rm -rf assets
     rm ".gitattributes" "README.md" "_config.yml"
     
-    randomTemplate=$(a=(*); echo ${a[$((RANDOM % ${#a[@]}))]} 2>&1)
+    randomTemplate=$(find . -maxdepth 1 -type d | shuf -n 1)
     if [[ -n "$randomTemplate" ]]; then
         echo "Random template name: ${randomTemplate}"
     else
