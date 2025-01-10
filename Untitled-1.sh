@@ -1,23 +1,14 @@
 #!/bin/bash
 
-# حذف کاراکترهای \r (ویندوز) از اسکریپت
-sed -i 's/\r//' "$0"
-
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
-plain='\033[0m'
-NC='\033[0m'
-
 install_jq() {
     if ! command -v jq &> /dev/null; then
         if command -v apt-get &> /dev/null; then
-            echo -e "${RED}jq is not installed. Installing...${NC}"
+            echo "jq is not installed. Installing..."
             sleep 1
             sudo apt-get update
             sudo apt-get install -y jq
         else
-            echo -e "${RED}Error: Unsupported package manager. Please install jq manually.${NC}\n"
+            echo "Error: Unsupported package manager. Please install jq manually."
             read -p "Press any key to continue..."
             exit 1
         fi
@@ -26,7 +17,7 @@ install_jq() {
 
 install_curl() {
     if ! command -v curl &> /dev/null; then
-        echo -e "${RED}curl is not installed. Installing...${NC}"
+        echo "curl is not installed. Installing..."
         sleep 1
         sudo apt-get update
         sudo apt-get install -y curl
@@ -90,22 +81,9 @@ setupFakeWebSite(){
 
 menu(){
     clear
-    echo -e "${YELLOW}  ------- ${GREEN}Web Server${YELLOW} ------- "
+    echo "------- Web Server ------- "
     echo "|"
-    echo -e "|  22 - Install Nginx + Fake-WebSite Template [HTML]"
+    echo "|  22 - Install Nginx + Fake-WebSite Template [HTML]"
     echo "|"
     echo ""
-    read -p "Please choose an option: " choice
-    case $choice in
-        22)
-            setupFakeWebSite
-        ;;
-        *)
-            echo "Invalid option. Exiting."
-            exit 1
-        ;;
-    esac
-}
-
-loader
-menu
+    read -p "Please choose an optio
