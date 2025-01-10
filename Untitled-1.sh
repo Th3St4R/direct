@@ -86,4 +86,17 @@ menu(){
     echo "|  22 - Install Nginx + Fake-WebSite Template [HTML]"
     echo "|"
     echo ""
-    read -p "Please choose an optio
+    read -p "Please choose an option: " choice
+    case $choice in
+        22)
+            setupFakeWebSite
+        ;;
+        *)
+            echo "Invalid option. Exiting."
+            exit 1
+        ;;
+    esac
+}
+
+loader
+menu
